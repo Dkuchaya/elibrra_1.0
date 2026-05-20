@@ -33,26 +33,38 @@
             </a>
         @endcan
 
+       
         @can('manage authors')
-            <a href="#" class="block px-6 py-3 hover:bg-gray-800">
+            <a href="{{ route('authors.index') }}"
+            class="block px-6 py-3 hover:bg-gray-800">
                 Authors
             </a>
         @endcan
 
+       
+
         @can('manage publishers')
-            <a href="#" class="block px-6 py-3 hover:bg-gray-800">
+            <a href="{{ route('publishers.index') }}"
+            class="block px-6 py-3 hover:bg-gray-800">
                 Publishers
             </a>
-        @endcan
 
+        @endcan
+       
         @can('manage categories')
-            <a href="#" class="block px-6 py-3 hover:bg-gray-800">
+            <a href="{{ route('book-categories.index') }}"
+            class="block px-6 py-3 hover:bg-gray-800">
                 Categories
             </a>
         @endcan
 
         <a href="#" class="block px-6 py-3 hover:bg-gray-800">
             My Library
+        </a>
+
+        <a href="{{ route('users.index') }}"
+        class="block px-6 py-3 hover:bg-gray-800">
+            Users/Admins
         </a>
 
     </nav>

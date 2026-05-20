@@ -3,14 +3,22 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Author extends Model
 {
-    protected $fillable = ['name', 'biography'];
+    use HasFactory, SoftDeletes;
 
-    public function books(): BelongsToMany
+    protected $fillable = [
+        'name',
+        'slug',
+        'biography',
+        'is_active',
+    ];
+
+    public function books()
     {
-        return $this->belongsToMany(Book::class)->withTimestamps();
+        return $this->belongsToMany(Book::class);
     }
 }

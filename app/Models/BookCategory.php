@@ -3,13 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class BookCategory extends Model
 {
-    protected $fillable = ['name'];
+    use HasFactory, SoftDeletes;
 
-    public function books(): HasMany
+    protected $fillable = [
+        'name',
+        'slug',
+        'description',
+        'is_active',
+    ];
+
+    public function books()
     {
         return $this->hasMany(Book::class);
     }

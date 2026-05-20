@@ -7,6 +7,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
 use Livewire\WithFileUploads;
+use Livewire\Attributes\On;
 
 #[Layout('layouts.app')]
 class Index extends Component
@@ -48,7 +49,13 @@ class Index extends Component
 
         $this->resetForm();
 
-        session()->flash('success', 'School created successfully.');
+        // session()->flash('success', 'School created successfully.');
+        $this->dispatch('swal', [
+            'title' => 'Success',
+            'text' => 'School created successfully.',
+            'icon' => 'success',
+
+        ]);
     }
 
     public function edit(SchoolService $schoolService, $id)
@@ -103,38 +110,19 @@ class Index extends Component
         ]);
     }
 
-    // public function delete(SchoolService $schoolService, $id)
-    // {
-    //     $schoolService->delete($id);
+    
 
-    //     session()->flash('success', 'School deleted successfully.');
-    // }
-
-    public function confirmDelete($id)
+ public function confirmDelete($id)
 {
-    $this->dispatch('swal:confirm', [
-
-        'title' => 'Delete School?',
-        'text' => 'This action cannot be undone.',
-        'event' => 'deleteSchoolConfirmed',
-        'id' => $id,
-
-    ]);
+    $this->dispatch('confirm-delete', id: $id);
 }
 
-public function deleteSchoolConfirmed($data, SchoolService $schoolService)
+#[On('deleteSchoolConfirmed')]
+public function deleteSchoolConfirmed($id)
 {
-    $schoolService->delete($data['id']);
-
-    $this->dispatch('swal', [
-
-        'title' => 'Deleted',
-        'text' => 'School deleted successfully.',
-        'icon' => 'success',
-
-    ]);
+    app(SchoolService::class)->delete($id);
+    $this->resetPage();
 }
-
     public function resetForm()
     {
         $this->reset([

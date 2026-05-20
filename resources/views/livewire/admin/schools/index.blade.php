@@ -1,3 +1,4 @@
+
 <div>
     <div class="mb-6 flex items-center justify-between">
         <div>
@@ -231,13 +232,14 @@
                                         {{ $school->is_active ? 'Deactivate' : 'Activate' }}
                                     </button>
 
-                                    <button
-                                        type="button"
-                                        wire:click="confirmDelete({{ $school->id }})"
-                                        class="rounded bg-red-600 px-3 py-1 text-white hover:bg-red-700"
-                                    >
-                                        Delete
-                                    </button>
+                                  <button
+                                    type="button"
+                                    wire:click="confirmDelete({{ $school->id }})"
+                                    class="rounded bg-red-600 px-3 py-1 text-white hover:bg-red-700"
+                                >
+                                    Delete
+                                </button>
+                                
                                 </div>
                             </td>
                         </tr>
@@ -257,3 +259,32 @@
         </div>
     </div>
 </div>
+
+@script
+<script>
+    $wire.on('confirm-delete', ({ id }) => {
+        Swal.fire({
+            title: 'Delete School?',
+            text: 'This will remove the school and all associated data. This cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Yes, delete it',
+            cancelButtonText: 'Cancel',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $wire.dispatch('deleteSchoolConfirmed', { id: id }).then(() => {
+                    Swal.fire({
+                        title: 'Deleted!',
+                        text: 'School has been deleted successfully.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false,
+                    });
+                });
+            }
+        });
+    });
+</script>
+@endscript
