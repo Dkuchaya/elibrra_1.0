@@ -13,6 +13,12 @@ use App\Livewire\Admin\Subscriptions\Schools\Index as SchoolSubscriptionIndex;
 use App\Livewire\Admin\Subscriptions\Users\Index as UserSubscriptionIndex;
 use App\Livewire\Library\Books;
 use App\Livewire\Library\BookReader;
+use App\Livewire\Admin\Roles\Permissions as RolePermissions;
+use App\Livewire\Admin\Users\Permissions as UserPermissions;
+use App\Livewire\Admin\AccessControl\Index as AccessControlIndex;
+
+
+
 
 Route::view('/', 'welcome');
 
@@ -64,5 +70,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/admin/books', BookIndex::class)->name('admin.books.index');
     });
 });
+
+
+Route::middleware(['auth', 'verified', 'role:Super Admin'])->group(function () {
+    Route::get('/admin/role-permissions', RolePermissions::class)
+        ->name('admin.role-permissions.index');
+});
+
+
+
+Route::middleware(['auth', 'verified', 'role:Super Admin'])->group(function () {
+    Route::get('/admin/user-permissions', UserPermissions::class)
+        ->name('admin.user-permissions.index');
+});
+
+Route::middleware(['auth', 'verified', 'role:Super Admin'])->group(function () {
+    Route::get('/admin/access-control', AccessControlIndex::class)
+        ->name('admin.access-control.index');
+});
+
 
 require __DIR__.'/auth.php';
