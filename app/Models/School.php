@@ -39,6 +39,11 @@ class School extends Model
         return $this->hasMany(SchoolSubscription::class);
     }
 
+    public function schoolSubscriptions()
+{
+    return $this->hasMany(\App\Models\SchoolSubscription::class);
+}
+
  
 
         public function activeSubscription()

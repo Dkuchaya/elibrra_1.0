@@ -7,65 +7,62 @@ use App\Livewire\Admin\Users\Index as UserIndex;
 use App\Livewire\Admin\BookCategories\Index as BookCategoryIndex;
 use App\Livewire\Admin\Authors\Index as AuthorIndex;
 use App\Livewire\Admin\Publishers\Index as PublisherIndex;
-
-
-
+use App\Livewire\Admin\Books\Index as BookIndex;
+use App\Livewire\Admin\Subscriptions\Plans\Index as SubscriptionPlanIndex;
+use App\Livewire\Admin\Subscriptions\Schools\Index as SchoolSubscriptionIndex;
+use App\Livewire\Admin\Subscriptions\Users\Index as UserSubscriptionIndex;
+use App\Livewire\Library\Books;
+use App\Livewire\Library\BookReader;
 
 Route::view('/', 'welcome');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
 
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::view('/profile', 'profile')->name('profile');
 
-Route::middleware([
-    'auth',
-])->group(function () {
+    // Reader area: all authenticated users
+    Route::get('/library', Books::class)->name('library.index');
+    Route::get('/library/books/{slug}/read', BookReader::class)->name('library.books.read');
 
-    Route::get('/dashboard', function () {
+    // Super Admin only
+    Route::middleware(['role:Super Admin'])->group(function () {
+        Route::get('/schools', SchoolIndex::class)->name('schools.index');
+        Route::get('/school-admins', SchoolAdminIndex::class)->name('school-admins.index');
 
-        return view('dashboard');
+        Route::get('/admin/subscription-plans', SubscriptionPlanIndex::class)
+            ->name('admin.subscription-plans.index');
 
-    })->name('dashboard');
+        Route::get('/admin/school-subscriptions', SchoolSubscriptionIndex::class)
+            ->name('admin.school-subscriptions.index');
 
-});
+        Route::get('/admin/user-subscriptions', UserSubscriptionIndex::class)
+            ->name('admin.user-subscriptions.index');
+    });
 
+    // Super Admin + School Admin if they have permission
+    Route::middleware(['permission:manage users'])->group(function () {
+        Route::get('/users', UserIndex::class)->name('users.index');
+    });
 
-Route::middleware(['auth', 'role:Super Admin'])->group(function () {
-    Route::get('/schools', SchoolIndex::class)->name('schools.index');
-});
+    
 
+    Route::middleware(['permission:manage categories'])->group(function () {
+        Route::get('/book-categories', BookCategoryIndex::class)->name('book-categories.index');
+    });
 
-Route::middleware(['auth', 'role:Super Admin'])->group(function () {
-    Route::get('/school-admins', SchoolAdminIndex::class)
-        ->name('school-admins.index');
-});
+    Route::middleware(['permission:manage authors'])->group(function () {
+        Route::get('/authors', AuthorIndex::class)->name('authors.index');
+    });
 
+    Route::middleware(['permission:manage publishers'])->group(function () {
+        Route::get('/publishers', PublisherIndex::class)->name('publishers.index');
+    });
 
-Route::middleware(['auth', 'permission:manage users'])->group(function () {
-    Route::get('/users', UserIndex::class)->name('users.index');
-});
-
-
-Route::middleware(['auth', 'permission:manage categories'])->group(function () {
-    Route::get('/book-categories', BookCategoryIndex::class)
-        ->name('book-categories.index');
-});
-
-
-Route::middleware(['auth', 'permission:manage authors'])->group(function () {
-    Route::get('/authors', AuthorIndex::class)->name('authors.index');
-});
-
-
-Route::middleware(['auth', 'permission:manage publishers'])->group(function () {
-
-    Route::get('/publishers', PublisherIndex::class)
-        ->name('publishers.index');
-
+    // Books: only users with permission can manage books
+    Route::middleware(['permission:manage books'])->group(function () {
+        Route::get('/admin/books', BookIndex::class)->name('admin.books.index');
+    });
 });
 
 require __DIR__.'/auth.php';

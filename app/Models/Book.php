@@ -12,16 +12,52 @@ class Book extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'legacy_isbn','school_id','publisher_id','book_category_id','isbn','title','description','cover_image','pdf_path','pages','published_year','visibility','is_active'
+        'legacy_isbn',
+        'publisher_id',
+        'book_category_id',
+        'isbn',
+        'title',
+        'slug',
+        'description',
+        'cover_image',
+        'pdf_path',
+        'pages',
+        'published_year',
+        'language',
+        'file_size',
+        'views',
+        'featured',
+        'edition',
+        'book_type',
+        'subscription_required',
+        'visibility',
+        'is_active',
     ];
 
     protected function casts(): array
     {
-        return ['is_active' => 'boolean'];
+        return [
+            'is_active' => 'boolean',
+            'featured' => 'boolean',
+            'subscription_required' => 'boolean',
+            'views' => 'integer',
+            'file_size' => 'integer',
+        ];
     }
 
-    public function school(): BelongsTo { return $this->belongsTo(School::class); }
-    public function publisher(): BelongsTo { return $this->belongsTo(Publisher::class); }
-    public function category(): BelongsTo { return $this->belongsTo(BookCategory::class, 'book_category_id'); }
-    public function authors(): BelongsToMany { return $this->belongsToMany(Author::class)->withTimestamps(); }
+    public function publisher(): BelongsTo
+    {
+        return $this->belongsTo(Publisher::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(BookCategory::class, 'book_category_id');
+    }
+
+    public function authors(): BelongsToMany
+    {
+        return $this->belongsToMany(Author::class, 'author_book')
+            ->withTimestamps();
+    }
 }

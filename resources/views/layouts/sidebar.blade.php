@@ -28,7 +28,8 @@
         @endcan
 
         @can('manage books')
-            <a href="#" class="block px-6 py-3 hover:bg-gray-800">
+            <a href="{{ route('admin.books.index') }}" 
+            class="block px-6 py-3 hover:bg-gray-800">
                 Books
             </a>
         @endcan

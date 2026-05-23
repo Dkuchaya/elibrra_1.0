@@ -104,6 +104,8 @@
         </div>
     </div>
 
+    
+
     <div class="rounded bg-white p-6 shadow">
         <input
             type="text"
@@ -111,6 +113,49 @@
             placeholder="Search users..."
             class="mb-4 w-full rounded border-gray-300 md:w-1/3"
         >
+    <a href="{{ asset('templates/users_import_template.csv') }}"
+    download
+    class="rounded bg-blue-600 px-4 py-2 text-white">
+        Download CSV Template
+    </a>
+    <div class="mb-6 rounded bg-white p-6 shadow">
+    <h2 class="mb-4 text-lg font-semibold">Bulk Upload Users</h2>
+
+    <div class="flex flex-col gap-3 md:flex-row md:items-center">
+        <input
+            type="file"
+            wire:model="csv_file"
+            accept=".csv,.txt"
+            class="rounded border border-gray-300 p-2"
+        >
+
+        <button
+            type="button"
+            wire:click="importCsv"
+            class="rounded bg-green-600 px-5 py-2 text-white">
+            Upload CSV
+        </button>
+    </div>
+
+    @error('csv_file')
+        <span class="mt-2 block text-sm text-red-600">{{ $message }}</span>
+    @enderror
+
+    <div wire:loading wire:target="csv_file,importCsv" class="mt-2 text-sm text-blue-600">
+        Processing CSV...
+    </div>
+
+    <div class="mt-4 text-sm text-gray-600">
+        CSV format:
+        <code>first_name,last_name,email,phone,gender,city,role,school_id,password</code>
+    </div>
+
+    @if(! auth()->user()->hasRole('Super Admin'))
+        <div class="mt-2 text-sm text-blue-700">
+            School Admin uploads will automatically be assigned to your school and role Reader.
+        </div>
+    @endif
+</div>
 
         <div class="overflow-x-auto">
             <table class="w-full border text-sm">

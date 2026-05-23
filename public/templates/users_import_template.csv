@@ -1,0 +1,5 @@
+first_name,last_name,email,phone,gender,city,role,school_id,password
+John,Phiri,john.phiri@example.com,0977123456,Male,Lusaka,Reader,1,password123
+Mary,Banda,mary.banda@example.com,0966123456,Female,Ndola,Individual User/Student,1,password123
+Peter,Tembo,peter.tembo@example.com,0955123456,Male,Kitwe,Librarian/Admin,2,password123
+Susan,Mulenga,susan.mulenga@example.com,0978123456,Female,Livingstone,School Admin,3,password123
