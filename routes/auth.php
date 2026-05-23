@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
@@ -17,6 +17,11 @@ Route::middleware('guest')->group(function () {
     Volt::route('reset-password/{token}', 'pages.auth.reset-password')
         ->name('password.reset');
 });
+
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('logout');
+
 
 Route::middleware('auth')->group(function () {
     Volt::route('verify-email', 'pages.auth.verify-email')

@@ -1,6 +1,22 @@
 import './bootstrap';
+
 import Swal from 'sweetalert2';
 import './book-reader';
+
+import Alpine from 'alpinejs';
+import collapse from '@alpinejs/collapse';
+
+Alpine.plugin(collapse);
+
+window.Alpine = Alpine;
+
+Alpine.start();
+
+window.Swal = Swal;
+
+Alpine.plugin(collapse);
+window.Alpine = Alpine;
+Alpine.start();
 
 window.Swal = Swal;
 

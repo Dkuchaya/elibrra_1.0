@@ -75,6 +75,11 @@
                            class="text-sm bg-blue-600 text-white px-3 py-2 rounded-lg">
                             Read
                         </a>
+                    <button
+                        wire:click="openAddToListModal({{ $book->id }})"
+                        class="text-sm bg-gray-800 text-white px-3 py-2 rounded-lg">
+                        Add to List
+                    </button>
                     </div>
                 </div>
             </div>
@@ -88,5 +93,71 @@
     <div class="mt-8">
         {{ $books->links() }}
     </div>
+
+    @if($addToListModalOpen)
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+        <div class="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+
+            <div class="mb-4 flex justify-between">
+                <h2 class="text-xl font-bold">
+                    Add Book To List
+                </h2>
+
+                <button wire:click="$set('addToListModalOpen', false)" class="text-2xl">
+                    ×
+                </button>
+            </div>
+
+            @if($myLists->count())
+                <div>
+                    <label class="text-sm font-medium">
+                        Select List
+                    </label>
+
+                    <select wire:model="selectedListId"
+                        class="mt-1 w-full rounded border-gray-300">
+                        <option value="">Choose list</option>
+
+                        @foreach($myLists as $list)
+                            <option value="{{ $list->id }}">
+                                {{ $list->name }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    @error('selectedListId')
+                        <span class="text-sm text-red-600">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="mt-6 flex justify-end gap-3">
+                    <button
+                        wire:click="$set('addToListModalOpen', false)"
+                        class="rounded bg-gray-200 px-4 py-2">
+                        Cancel
+                    </button>
+
+                    <button
+                        wire:click="addBookToList"
+                        class="rounded bg-blue-600 px-4 py-2 text-white">
+                        Add Book
+                    </button>
+                </div>
+            @else
+                <div class="rounded bg-yellow-100 p-4 text-yellow-800">
+                    You do not have any book lists yet.
+                </div>
+
+                <div class="mt-4">
+                    <a href="{{ route('my-library.index') }}"
+                       class="rounded bg-blue-600 px-4 py-2 text-white">
+                        Create Book List
+                    </a>
+                </div>
+            @endif
+
+        </div>
+    </div>
+@endif
 
 </div>

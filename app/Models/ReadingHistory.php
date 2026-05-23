@@ -6,10 +6,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class ReadingHistory extends Model
 {
-    protected $fillable = ['user_id','book_id','last_page','last_read_at'];
+    protected $fillable = [
+        'user_id',
+        'book_id',
+        'last_page',
+        'last_read_at',
+    ];
 
     protected function casts(): array
     {
-        return ['last_read_at' => 'datetime'];
+        return [
+            'last_read_at' => 'datetime',
+        ];
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function book()
+    {
+        return $this->belongsTo(Book::class);
     }
 }

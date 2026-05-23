@@ -45,6 +45,15 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\UserSubscription::class);
     }
 
+    public function readingHistories()
+    {
+        return $this->hasMany(\App\Models\ReadingHistory::class);
+    }
+    public function bookLists()
+    {
+        return $this->hasMany(\App\Models\BookList::class);
+    }
+
 
 
     

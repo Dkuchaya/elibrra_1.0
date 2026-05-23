@@ -60,4 +60,16 @@ class Book extends Model
         return $this->belongsToMany(Author::class, 'author_book')
             ->withTimestamps();
     }
+
+    public function readingHistories()
+    {
+        return $this->hasMany(\App\Models\ReadingHistory::class);
+    }
+
+    public function bookLists()
+    {
+        return $this->belongsToMany(\App\Models\BookList::class, 'book_list_items')
+            ->withPivot('sort_order')
+            ->withTimestamps();
+    }
 }

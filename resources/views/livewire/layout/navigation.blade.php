@@ -57,10 +57,11 @@ new class extends Component
                         </x-dropdown-link>
 
                         <!-- Authentication -->
-                        <button wire:click="logout" class="w-full text-start">
-                            <x-dropdown-link>
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
+                        <button
+                            type="button"
+                            wire:click="logout"
+                            class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none transition duration-150 ease-in-out">
+                            {{ __('Log Out') }}
                         </button>
                     </x-slot>
                 </x-dropdown>

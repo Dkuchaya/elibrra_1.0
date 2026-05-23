@@ -17,6 +17,9 @@ use App\Livewire\Admin\Roles\Permissions as RolePermissions;
 use App\Livewire\Admin\Users\Permissions as UserPermissions;
 use App\Livewire\Admin\AccessControl\Index as AccessControlIndex;
 
+use App\Livewire\Library\MyLists;
+use App\Livewire\Library\ViewBookList;
+
 
 
 
@@ -89,5 +92,14 @@ Route::middleware(['auth', 'verified', 'role:Super Admin'])->group(function () {
         ->name('admin.access-control.index');
 });
 
+
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/my-library', MyLists::class)
+        ->name('my-library.index');
+
+    Route::get('/lists/{slug}', ViewBookList::class)
+        ->name('book-lists.show');
+});
 
 require __DIR__.'/auth.php';
