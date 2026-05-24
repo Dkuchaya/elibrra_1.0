@@ -21,15 +21,17 @@
     <nav class="space-y-2 px-3 py-4">
 
         {{-- Dashboard --}}
-        <a href="{{ route('dashboard') }}"
-           class="{{ request()->routeIs('dashboard')
-                ? 'bg-blue-100 text-blue-700'
-                : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}
-                flex items-center gap-3 rounded-xl px-4 py-3 transition">
+        @can('view dashboard')
+            <a href="{{ route('dashboard') }}"
+            class="{{ request()->routeIs('dashboard')
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}
+                    flex items-center gap-3 rounded-xl px-4 py-3 transition">
 
-            <span class="text-lg">🏠</span>
-            <span x-show="!collapsed" x-transition>Dashboard</span>
-        </a>
+                <span class="text-lg">🏠</span>
+                <span x-show="!collapsed" x-transition>Dashboard</span>
+            </a>
+        @endcan
 
         {{-- Library --}}
         <div>

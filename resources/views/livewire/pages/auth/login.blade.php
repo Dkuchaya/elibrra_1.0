@@ -20,9 +20,14 @@ new #[Layout('layouts.guest')] class extends Component
 
         Session::regenerate();
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
-    }
-}; ?>
+    $this->redirectIntended(
+        default: auth()->user()->can('view dashboard')
+            ? route('dashboard', absolute: false)
+            : route('library.index', absolute: false),
+        navigate: true
+    );    }
+}; 
+?>
 
 <div>
     <!-- Session Status -->

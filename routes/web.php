@@ -19,15 +19,30 @@ use App\Livewire\Admin\AccessControl\Index as AccessControlIndex;
 
 use App\Livewire\Library\MyLists;
 use App\Livewire\Library\ViewBookList;
+use App\Services\DashboardService;
 
 
 
 
-Route::view('/', 'welcome');
+
+// Route::view('/', 'welcome');
+Route::redirect('/', '/library');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    // Route::view('/dashboard', 'dashboard')->name('dashboard');
+//     Route::middleware(['auth', 'verified', 'permission:view dashboard'])->group(function () {
+//     Route::view('/dashboard', 'dashboard')->name('dashboard');
+// });
+
+Route::get('/dashboard', function (DashboardService $dashboardService) {
+    return view('dashboard', $dashboardService->summary());
+})->middleware([
+    'auth',
+    'verified',
+    'permission:view dashboard',
+])->name('dashboard');
+
     Route::view('/profile', 'profile')->name('profile');
 
     // Reader area: all authenticated users

@@ -3,28 +3,15 @@ import './bootstrap';
 import Swal from 'sweetalert2';
 import './book-reader';
 
-import Alpine from 'alpinejs';
-import collapse from '@alpinejs/collapse';
 
-Alpine.plugin(collapse);
-
-window.Alpine = Alpine;
-
-Alpine.start();
-
-window.Swal = Swal;
-
-Alpine.plugin(collapse);
-window.Alpine = Alpine;
-Alpine.start();
-
-window.Swal = Swal;
 
 window.addEventListener('swal', event => {
+    const data = event.detail[0];
+
     Swal.fire({
-        title: event.detail[0].title,
-        text: event.detail[0].text,
-        icon: event.detail[0].icon,
+        title: data.title,
+        text: data.text,
+        icon: data.icon,
         confirmButtonColor: '#2563eb',
     });
 });
@@ -43,7 +30,7 @@ window.addEventListener('swal:confirm', event => {
     }).then((result) => {
         if (result.isConfirmed) {
             Livewire.dispatch(data.event, {
-                id: data.id
+                id: data.id,
             });
         }
     });
